@@ -30,59 +30,60 @@ More diagrams are available in [`docs/`](docs):
 
 ## 📁 Repository Structure
 
+```
 SQL-Project/
 │
-├── Datasets/ # Raw source data (as provided by CRM/ERP)
-│ ├── source_crm/
-│ │ ├── cust_info.csv
-│ │ ├── prd_info.csv
-│ │ └── sales_details.csv
-│ └── source_erp/
-│ ├── CUST_AZ12.csv
-│ ├── LOC_A101.csv
-│ └── PX_CAT_G1V2.csv
+├── Datasets/                          # Raw source data (as provided by CRM/ERP)
+│   ├── source_crm/
+│   │   ├── cust_info.csv
+│   │   ├── prd_info.csv
+│   │   └── sales_details.csv
+│   └── source_erp/
+│       ├── CUST_AZ12.csv
+│       ├── LOC_A101.csv
+│       └── PX_CAT_G1V2.csv
 │
 ├── scripts/
-│ ├── database_creation.sql # Creates the DataWarehouse DB + bronze/silver/gold schemas
-│ ├── Bronze Layer/
-│ │ ├── DDL.sql # CREATE TABLE statements for bronze.*
-│ │ └── Data_Loading.sql # bronze.load_data stored procedure (BULK INSERT from CSV)
-│ ├── Silver Layer/
-│ │ ├── DDL.sql # CREATE TABLE statements for silver.*
-│ │ └── Data_Loading.sql # Cleansing/standardization load procedure
-│ └── Gold Layer/
-│ └── DDL.sql # CREATE VIEW statements for gold.dim_customers,
-│ # gold.dim_products, gold.fact_sales
+│   ├── database_creation.sql          # Creates the DataWarehouse DB + bronze/silver/gold schemas
+│   ├── Bronze Layer/
+│   │   ├── DDL.sql                    # CREATE TABLE statements for bronze.*
+│   │   └── Data_Loading.sql           # bronze.load_data stored procedure (BULK INSERT from CSV)
+│   ├── Silver Layer/
+│   │   ├── DDL.sql                    # CREATE TABLE statements for silver.*
+│   │   └── Data_Loading.sql           # Cleansing/standardization load procedure
+│   └── Gold Layer/
+│       └── DDL.sql                    # CREATE VIEW statements for gold.dim_customers,
+│                                       # gold.dim_products, gold.fact_sales
 │
 ├── Tests/
-│ ├── Silver_Layer.sql # Data quality checks (nulls, dupes, spacing, date logic)
-│ └── Gold_Layer.sql # Surrogate key uniqueness + fact/dimension connectivity
+│   ├── Silver_Layer.sql               # Data quality checks (nulls, dupes, spacing, date logic)
+│   └── Gold_Layer.sql                 # Surrogate key uniqueness + fact/dimension connectivity
 │
-├── EDA/ # Exploratory data analysis & reporting views on the Gold layer
-│ ├── 01_Database_Exploration.sql
-│ ├── 02_Dimension_Exploration.sql
-│ ├── 03_Date_Range_Exploration.sql
-│ ├── 04_Measures_Exploration.sql
-│ ├── 05_Magnitude Analysis.sql
-│ ├── 06_Ranking Analysis.sql
-│ ├── 07_Change Over Time Analysis.sql
-│ ├── 08_Cumulative Analysis.sql
-│ ├── 09_Performance_Analysis.sql
-│ ├── 10_Data_Segmentation_Analysis.sql
-│ ├── 11_Part_to_Whole_Analysis.sql
-│ ├── 12_Customer_Report.sql # Builds the gold.report_customers view
-│ └── 13_Product_Report.sql # Builds the gold.report_products view
+├── EDA/                                # Exploratory data analysis & reporting views on the Gold layer
+│   ├── 01_Database_Exploration.sql
+│   ├── 02_Dimension_Exploration.sql
+│   ├── 03_Date_Range_Exploration.sql
+│   ├── 04_Measures_Exploration.sql
+│   ├── 05_Magnitude Analysis.sql
+│   ├── 06_Ranking Analysis.sql
+│   ├── 07_Change Over Time Analysis.sql
+│   ├── 08_Cumulative Analysis.sql
+│   ├── 09_Performance_Analysis.sql
+│   ├── 10_Data_Segmentation_Analysis.sql
+│   ├── 11_Part_to_Whole_Analysis.sql
+│   ├── 12_Customer_Report.sql          # Builds the gold.report_customers view
+│   └── 13_Product_Report.sql           # Builds the gold.report_products view
 │
 ├── docs/
-│ ├── Data Architecture Diagram.drawio
-│ ├── Data_Flow_Diagram.drawio
-│ ├── Data_Flow_Lineage.drawio
-│ ├── Sales_Data_Mart_Star_Schema.drawio
-│ ├── Data_Architecture_Diagram.png
-│ └── data_catalog.md
+│   ├── Data Architecture Diagram.drawio
+│   ├── Data_Flow_Diagram.drawio
+│   ├── Data_Flow_Lineage.drawio
+│   ├── Sales_Data_Mart_Star_Schema.drawio
+│   ├── Data_Architecture_Diagram.png
+│   └── data_catalog.md
 │
 └── Readme.md
-
+```
 
 ---
 
@@ -103,31 +104,31 @@ Full column definitions, data types, and descriptions are documented in [`docs/d
 Requirements: **SQL Server** (with `BULK INSERT` access to the `Datasets` folder) and **SQL Server Management Studio** (or another SQL Server client).
 
 1. **Create the database and schemas**
-```sql
+   ```sql
    -- Run scripts/database_creation.sql
-```
+   ```
 2. **Build the Bronze layer**
-```sql
+   ```sql
    -- Run scripts/Bronze Layer/DDL.sql
    -- Run scripts/Bronze Layer/Data_Loading.sql to create bronze.load_data
    EXEC bronze.load_data;
-```
+   ```
    > Update the file paths in `Data_Loading.sql`'s `BULK INSERT` statements to point at your local copy of `Datasets/source_crm` and `Datasets/source_erp`.
 3. **Build the Silver layer**
-```sql
+   ```sql
    -- Run scripts/Silver Layer/DDL.sql
    -- Run scripts/Silver Layer/Data_Loading.sql to load and standardize the data
-```
+   ```
 4. **Build the Gold layer**
-```sql
+   ```sql
    -- Run scripts/Gold Layer/DDL.sql
    -- This creates gold.dim_customers, gold.dim_products, and gold.fact_sales as views
-```
+   ```
 5. **Validate**
-```sql
+   ```sql
    -- Run Tests/Silver_Layer.sql after loading Silver
    -- Run Tests/Gold_Layer.sql after creating Gold views
-```
+   ```
 
 ---
 
